@@ -1,11 +1,9 @@
 <input type="file" (change)="onFileChange($event.target)">
 <button (click)="fileUploadedClick()">Upload File</button>
-<div>{{ fileNames | async }}
-    <!-- <ul class="list-group">
-    <li  *ngFor="let fileName of fileNamesArray" class="list-group-item" >
+<div>
+    <ul class="list-group">
+    <li  *ngFor="let fileName of fileNames$ | async" class="list-group-item" >
         {{ fileName }}
         </li>
     </ul>
-</div> -->
-
-<button (click)="reset()">Reset Counter</button>
+</div>

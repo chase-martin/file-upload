@@ -10,39 +10,38 @@ import { fileChosen, fileUploaded, reset } from './file-upload.actions';
   styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent implements OnInit {
-  fileNames: Observable<string>;
-  fileNamesArray: string[] = [];
+  fileNames$: Observable<Array<string|null>>;
+  currFile$: Observable<File>
 
-  constructor(private fileUploadService: FileUploadService, private store: Store<{fileNames: string}>) {
-    this.fileNames = store.select('fileNames');
+  constructor(
+    private fileUploadService: FileUploadService, 
+    private store: Store<{currFileName: string, currFile: any, fileNames: string[] }>
+  ) {
+    this.fileNames$ = store.select('fileNames');
+    this.currFile$ = store.select('currFile');
   }
 
   ngOnInit(): void {
   }
 
+  // When user uploads file, add file name to list of file names.
   fileUploadedClick() {
     this.store.dispatch(fileUploaded());
+    // Once user clicks upload File, send file to upload service.
+    // this.fileUploadService.uploadFile(this.currFile$).subscribe(
+    //   (res: any) => {
+    //     console.log('response', res);
+    //   },
+    // );
   }
      
+  // When user chooses a file to upload, save in state.
   onFileChange(target: any) {
     const files = target.files;
     if(files.length != 0) {
-      console.log("Selected File Name is: ", files[0].name);
-      //this.store.dispatch(fileChosen({payload: files[0].name}));
-      this.store.dispatch(fileChosen());
+      const fileName = files[0].name;
+      const file = files[0];
+      this.store.dispatch(fileChosen({payload: {fileName, file}}));
     }
-    
   }
-
-  reset() {
-    this.store.dispatch(reset());
-  }
-
-  onSubmit() {
-    // this.fileUploadService.upload(formData, this.userId).subscribe(
-    //   (res: any) => this.uploadResponse = res,
-    //   (err: any) => this.error = err
-    // );
-  }
-
 }

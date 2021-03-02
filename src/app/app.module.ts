@@ -18,7 +18,9 @@ import { fileUploadReducer } from './file-upload/file-upload.reducer';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({ fileNames: fileUploadReducer })
+    StoreModule.forRoot({ 
+      fileUploadReducer
+    }, {})
   ],
   providers: [],
   bootstrap: [AppComponent]
